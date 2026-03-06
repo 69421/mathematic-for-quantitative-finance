@@ -1,6 +1,9 @@
 from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 
+MAX_CHAPTER_CONTENT_LENGTH = 3000
+MAX_FLASHCARD_CONTENT_LENGTH = 2000
+
 CFA_SYSTEM_PROMPT = """Tu es un assistant pédagogique expert en finance, spécialisé dans la préparation au CFA Level I.
 Tu aides les étudiants francophones à comprendre les concepts financiers, à résoudre des exercices et à réviser efficacement.
 Réponds toujours en français, de façon claire, structurée et pédagogique.
@@ -85,7 +88,7 @@ def generate_revision_sheet(chapter_content: str, chapter_name: str, api_key: st
 Chapitre: {chapter_name}
 
 Contenu:
-{chapter_content[:3000]}
+{chapter_content[:MAX_CHAPTER_CONTENT_LENGTH]}
 
 La fiche doit contenir:
 1. 📌 Résumé synthétique (5-7 points clés)
@@ -107,7 +110,7 @@ def generate_flashcards(content: str, topic: str, num_cards: int, api_key: str) 
 Sujet: {topic}
 
 Contenu de référence:
-{content[:2000]}
+{content[:MAX_FLASHCARD_CONTENT_LENGTH]}
 
 Retourne les flashcards au format suivant (une par ligne, séparées par '|||'):
 Question ||| Réponse
