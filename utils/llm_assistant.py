@@ -1,5 +1,9 @@
+import logging
+
 from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
+
+logger = logging.getLogger(__name__)
 
 MAX_CHAPTER_CONTENT_LENGTH = 3000
 MAX_FLASHCARD_CONTENT_LENGTH = 2000
@@ -190,6 +194,7 @@ Assure-toi que:
                     "correct": correct,
                     "explanation": explanation
                 })
-        except Exception:
+        except Exception as exc:
+            logger.warning("Failed to parse exam question block: %s", exc)
             continue
     return questions

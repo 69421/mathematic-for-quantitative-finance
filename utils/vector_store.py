@@ -14,7 +14,13 @@ def build_vector_store(chunks: list, api_key: str) -> FAISS:
 
 
 def load_vector_store(api_key: str) -> FAISS | None:
-    """Load an existing FAISS vector store if it exists."""
+    """Load an existing FAISS vector store if it exists.
+
+    ``allow_dangerous_deserialization=True`` is required by LangChain's FAISS
+    loader because the index is persisted with pickle.  This is safe here
+    because the index is written exclusively by ``build_vector_store`` in the
+    same application — no untrusted data ever reaches this path.
+    """
     embeddings = OpenAIEmbeddings(openai_api_key=api_key)
     if os.path.exists(VECTOR_STORE_PATH):
         return FAISS.load_local(VECTOR_STORE_PATH, embeddings, allow_dangerous_deserialization=True)
